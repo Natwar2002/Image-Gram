@@ -21,7 +21,13 @@ const userSchema = new mongoose.Schema({
     password: {
         type: String,
         required: true,
-        minLength: 5
+        minLength: 5,
+        validate: {
+            validator: function(passwordValue) {
+                return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(passwordValue);
+            },
+            message: "Please choose a stronger password"
+        }
     }
 }, { timestamps: true });
 
