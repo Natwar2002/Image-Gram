@@ -1,3 +1,3 @@
-export const createPost = async (createPostObject) => {
+export const createPostService = async (createPostObject) => {
     
 }

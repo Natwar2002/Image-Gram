@@ -1,27 +1,24 @@
 import express from 'express';
 import connectDB from "./config/dbConfig.js";
+import { createPost } from './controllers/postController.js';
+import upload from './config/multerConfig.js';
 
 const PORT = 3000;
 
 const app = express();
 
-app.get('/', (req, res) => {
-    return res.send("Home");
-});
+app.use(express.json());
+app.use(express.text());
+app.use(express.urlencoded());
 
 app.get('/ping', (req, res) => {
-    return res.json({Message: "Pong"})
+    // const name = req.params.name;
+    // console.log(req.query);
+    // console.log(req.body);
+    return res.json({Message: "Pong" + " " + name});
 });
 
-app.get('/hello', (req, res) => {
-    return res.json({Message : "GET: Hello world!"})
-});
-
-app.post('/hello', (req, res) => {
-    return res.json({Message : "POST: Hello world"})
-});
-
-
+app.post('/posts', upload.single('image'), createPost);
 
 app.listen(PORT, () => {
     console.log("Server running on http://localhost:",PORT);
