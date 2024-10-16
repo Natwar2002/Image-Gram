@@ -13,12 +13,7 @@ const fileFilter = (req, file, cb) => {
         
         return cb(new Error("File type not supported"));
     }
-
-    if(file.mimetype !== "image/jpeg" && file.mimetype !== "image/png") {
-        console.log("File type not supported");
-        
-        return cb(new Error("File type not supported"));
-    }
+    
     console.log(file);
     const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9); // to make sure the key is unique
     cb(null, file.fieldname + "-" + uniqueSuffix + "." + file.mimetype.split("/")[1]);
