@@ -40,14 +40,18 @@ export async function getAllPosts (req, res) {
     try {
         const limit = req.query.limit || 10;
         const offset = req.query.offset || 0;
-        const posts = await getAllPostService(limit, offset);
+        const posts = await getAllPostService(offset, limit);
         
         return res.status(200).json({
             success: true,
-            message: 'Not implemented',
+            message: 'All posts fetched successfully',
             data: posts
         });
     } catch (error) {
-        
+        console.log(error);
+        return res.status(500).json({
+            success: false,
+            message: 'Internal server error'
+        });
     }
 }
