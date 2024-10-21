@@ -11,7 +11,7 @@ export const createPost = async (caption, image) => {
 
 export const findAllPosts = async (offset, limit) => {
     try {
-        const posts = await Post.find().sort({ createdAt: -1 }).skip(offset).limit(limit);
+        const posts = await Post.find().sort({ createdAt: -1 }).skip(offset).limit(limit).populate('user', "username, email");
         return posts;
     } catch (error) {
         console.log(error);
@@ -39,6 +39,15 @@ export const findPostById = async (id) => {
 export const deletePostById = async (id) => {
     try {
         const post = await Post.findByIdAndDelete(id);
+        return post;
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export const updatePostById = async (id, updateObject) => {
+    try {
+        const post = await Post.findByIdAndUpdate(id, updateObject, { new: true });
         return post;
     } catch (error) {
         console.log(error);

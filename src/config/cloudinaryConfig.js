@@ -4,7 +4,7 @@ import { API_KEY, API_SECRET, CLOUD_NAME } from "./serverConfig.js";
 cloudinary.config({
     cloud_name: CLOUD_NAME,
     api_key: API_KEY,
-    api_secret: API_SECRET
+    api_secret: API_SECRET,
 });
 
 export default cloudinary;

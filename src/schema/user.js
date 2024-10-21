@@ -18,6 +18,11 @@ const userSchema = new mongoose.Schema({
             message: "Invalid email format"
         }
     },
+    role: {
+        type: String,
+        default: "user",
+        enum: ["user", "admin"],
+    },
     password: {
         type: String,
         required: true,
@@ -34,3 +39,28 @@ const userSchema = new mongoose.Schema({
 const user = mongoose.model("User", userSchema);
 
 export default user;
+
+
+// // service 
+// export async function signInService(user) {
+//     try {
+//         const user = await findUserByEmail(user.email);
+
+//         if (!user) {
+//             throw new Error('User with this email does not exist');
+//         }
+
+//         const isPasswordValid = await bcrypt.compare(password, user.password);
+//         if (!isPasswordValid) {
+//             throw new Error('Invalid password');
+//         }
+
+//         const token = jwt.sign(
+//             { id: user._id, username: user.username, email: user.email }, 
+//             JWT_SECRET, 
+//             { expiresIn: '1h' }
+//         );
+//     } catch (error) {
+//         throw error;
+//     }
+// }
