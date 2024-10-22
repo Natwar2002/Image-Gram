@@ -17,6 +17,15 @@ export async function signupService(user) {
     }
 }
 
+export async function checkIfUserExist(email) {
+    try {
+        const user = await findUserByEmail(email);
+        return user;
+    } catch (error) {
+        throw error;
+    }
+}
+
 export async function singinService(userDetails) {
     try {
         const user = await findUserByEmail(userDetails.email);
