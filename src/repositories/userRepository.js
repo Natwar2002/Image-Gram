@@ -18,11 +18,12 @@ export const findAllUsers = async () => {
     }
 }
 
-export async function createUser(user) {
+export const createUser = async (user) => {
     try {
-        const newUser = User.create(user);
+        const newUser = await User.create(user); 
         return newUser;
     } catch (error) {
         console.log(error);
+        throw error;
     }
 }

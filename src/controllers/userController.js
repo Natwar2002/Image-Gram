@@ -13,18 +13,19 @@ export async function signup(req, res) {
         const newUser = await signupService(req.body);
         res.status(201).json({
             success: true,
-            message: 'User signed up successfully',
-            data: {
-                id: newUser._id,
-                username: newUser.username,
-                email: newUserre.email,
-            },
+            message: 'User created successfully',
+            data: newUser,
         });
     } catch (error) {
-        console.error(error);
+        if(error.status) {
+            res.status(error.status).json({
+                success: false,
+                error: error.message,
+            });
+        }
         res.status(500).json({
             success: false,
-            error: 'Signup failed. ' ,
+            error: 'Signup failed due to internal server error',
         });
     }
 }

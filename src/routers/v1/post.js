@@ -6,7 +6,7 @@ import { zodPostSchema } from "../../validators/zodPostSchema.js";
 
 const router = express.Router();
 
-router.post('/', validate(zodPostSchema), upload.single('image'), createPost);
+router.post('/', upload.single('image'), validate(zodPostSchema), createPost);
 router.get('/', getAllPosts);
 router.delete('/:id', deletePost);
 router.put('/:id', upload.single('image'), updatePost);

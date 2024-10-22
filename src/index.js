@@ -6,10 +6,12 @@ const PORT = 3000;
 
 const app = express();
 
-app.use('/api', apiRouter);
+
 app.use(express.json());
 app.use(express.text());
-app.use(express.urlencoded());
+app.use(express.urlencoded({ extended: true }));
+
+app.use('/api', apiRouter);
 
 app.get('/ping', (req, res) => {
     // const name = req.params.name;
