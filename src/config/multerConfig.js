@@ -4,8 +4,7 @@ const storage = multer.memoryStorage()
 
 const fileFilter = (req, file, cb) => {
     if(!file) {
-        console.log("File not found");
-        
+        console.log("File not found", file);
         return cb(new Error("File not found"));
     }
     if(file.mimetype !== "image/jpeg" && file.mimetype !== "image/png") {
