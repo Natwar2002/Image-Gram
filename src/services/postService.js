@@ -3,7 +3,8 @@ import { countAllPost, createPost, deletePostById, findAllPosts, updatePostById 
 export const createPostService = async (createPostObject) => {
     const image = createPostObject.image;
     const caption = createPostObject.caption?.trim();
-    const post = await createPost(caption, image);
+    const user = createPostObject.user;
+    const post = await createPost(caption, image, user);
     return post;
 }
 

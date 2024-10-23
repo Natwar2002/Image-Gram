@@ -7,7 +7,7 @@ export const isAuthenticated = async (req, res, next) => {
     if(!token) {
         return res.status(400).json({
             success: false,
-            message: "Token is required",
+            message: "Authentication Failed: Token is required",
         });
     }
 

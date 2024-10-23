@@ -35,8 +35,6 @@ export async function singinService(userDetails) {
                 message: "User not found"
             }
         }
-
-        console.log(user);
         
         const isPasswordValid = bcrypt.compareSync(userDetails.password, user.password);
 
@@ -46,8 +44,7 @@ export async function singinService(userDetails) {
                 message: "Invalid password"
             }
         }
-        const token = generateJwtToken({ email: user.email, _id: user._id, username: user.username 
-        });
+        const token = generateJwtToken({ email: user.email, _id: user._id, username: user.username });
         return token;
     } catch (error) {
         throw error;

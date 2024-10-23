@@ -4,10 +4,11 @@ import { createPostService, deletePostService, getAllPostService, updatePostServ
 export async function createPost(req, res) {
     try {
         const imageUrl = await uploadToCloudinary(req.file.buffer, "posts");
-
+        
         const post = await createPostService({
             image: imageUrl,
-            caption: req.body.caption
+            caption: req.body.caption,
+            user: req.user._id,
         });
 
         res.status(201).json({
