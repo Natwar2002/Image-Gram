@@ -7,6 +7,14 @@ import { isAdmin, isAuthenticated } from "../../middlewares/authMiddleware.js";
 
 const router = express.Router();
 
+/**
+ * @swagger
+ * /posts:
+ *  post:
+ *      summary: Creates a new post
+ *      description: Creates a new post
+ * 
+ */
 router.post('/', isAuthenticated, upload.single('image'), validate(zodPostSchema), createPost);
 router.get('/', getAllPosts);
 router.delete('/:id', isAuthenticated, deletePost);
