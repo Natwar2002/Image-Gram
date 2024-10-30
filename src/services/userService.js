@@ -4,7 +4,7 @@ import { generateJwtToken } from "../utils/jwt.js";
 
 export async function signupService(user) {
     try {
-        const newUser = await  createUser(user);
+        const newUser = await createUser(user);
         return newUser;
     } catch (error) {
         if(error.name === "MongoServerError" && error.code === 11000) {

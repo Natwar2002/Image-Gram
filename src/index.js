@@ -5,11 +5,13 @@ import { isAuthenticated } from './middlewares/authMiddleware.js';
 import swaggerJSDoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
 import { options } from './utils/swaggerOptions.js';
+import cors from 'cors';
 
 const PORT = 3000;
 
 const app = express();
 
+app.use(cors());
 app.use(express.json());
 app.use(express.text());
 app.use(express.urlencoded({ extended: true }));

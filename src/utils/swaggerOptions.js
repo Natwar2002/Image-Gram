@@ -1,9 +1,7 @@
 import { URL } from 'node:url';
 
 let pathToRoutesFile = new URL('../routers/v1/*.js', import.meta.url).pathname;
-console.log(pathToRoutesFile)
 pathToRoutesFile = pathToRoutesFile.replace(/^\/[a-zA-Z]:/, '');
-console.log(pathToRoutesFile)
 export const options = {
     definition: {
         openapi: '3.0.0',
