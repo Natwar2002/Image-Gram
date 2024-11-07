@@ -11,7 +11,38 @@ export const createPost = async (caption, image, user) => {
 
 export const findAllPosts = async (offset, limit) => {
     try {
-        const posts = await Post.find().sort({ createdAt: -1 }).skip(offset).limit(limit).populate('user', 'username email _id');
+        const posts = await Post.find()
+            .sort({ createdAt: -1 })
+            .skip(offset)
+            .limit(limit)
+            .populate('user', 'username email')
+            .populate({
+                path: 'comments',
+                populate: [
+                    { path: 'userId', select: 'username' },
+                    {
+                        path: 'likes', 
+                        populate: {
+                            path: 'user',
+                            select: 'username',
+                        },
+                    },
+                    {
+                        path: 'replies',
+                        populate: [
+                            { path: 'userId', select: 'username' },
+                            {
+                                path: 'likes',
+                                populate: { path: 'user', select: "username" },
+                            }
+                        ]
+                    }
+                ]
+            })
+            .populate({
+                path: 'likes',
+                populate: { path: 'user', select: 'username' }
+            });
         return posts;
     } catch (error) {
         console.log(error);

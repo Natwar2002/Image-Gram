@@ -1,4 +1,4 @@
-import { createComment, findCommentById, } from '../repositories/commentRepository.js';
+import { createComment, deleteComment, findCommentById, } from '../repositories/commentRepository.js';
 import { findPostById } from '../repositories/postRepository.js';
 
 export const createCommentService = async (content, onModel, commentableId, userId) => {
@@ -10,7 +10,6 @@ export const createCommentService = async (content, onModel, commentableId, user
                 message: `${onModel} not found`,
             }
         }
-        console.log("Parent: ", parent);
         
         const newComment = await createComment(content, onModel, userId, commentableId);
         await addChildCommentToParent(onModel, newComment, parent);
@@ -36,18 +35,18 @@ export const findCommentByIdService = async (commentId) => {
 }
 
 export const fetchCommentParent = async (onModel, commentableId) => {
-        try {
-            let parent;
-            if (onModel === "Post") {
-                parent = await findPostById(commentableId);
-            } else if (onModel === "Comment") {
-                parent = await findCommentById(commentableId);
-            }
-            return parent;
-        } catch (error) {
-            console.log(error);
+    try {
+        let parent;
+        if (onModel === "Post") {
+            parent = await findPostById(commentableId);
+        } else if (onModel === "Comment") {
+            parent = await findCommentById(commentableId);
         }
+        return parent;
+    } catch (error) {
+        console.log(error);
     }
+}
 
 export const addChildCommentToParent = async (onModel, newComment, parent) => {
     try {
@@ -57,6 +56,36 @@ export const addChildCommentToParent = async (onModel, newComment, parent) => {
             parent.replies.push(newComment._id);
         }
         await parent.save();
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export const deleteCommentService = async (commentId, userId) => {
+    try {
+        const comment = await findCommentById(commentId);
+        if(!comment) {
+            throw {
+                status: 404,
+                message: "Comment not found"
+            }
+        }
+
+        if (comment.user.userId.toString !== userId.toString()) {
+            throw {
+                status: 401,
+                message: "Unauthorized"
+            }
+        }
+
+        if(comment.replies && comment.replies.length > 0) {
+            for(const replyId of comment.replies) {
+                await deleteComment(replyId);
+            }
+        }
+
+        await deleteComment(commentId);
+        return true;
     } catch (error) {
         console.log(error);
     }

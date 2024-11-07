@@ -11,9 +11,18 @@ export async function createComment(content, onModel, userId, commentableId) {
 
 export async function findCommentById(id) {
     try {
-        const comment = await Comment.findById(id).populate("replies");
+        const comment = await Comment.findById(id).populate("replies").populate("likes");
         return comment;
     } catch (error) {
         console.log(error);
+    }
+}
+
+export async function deleteComment(commentId) {
+    try {
+        const comment = await Comment.findByIdAndDelete(commentId);
+        return comment;
+    } catch (error) {
+        console.log(error);   
     }
 }
