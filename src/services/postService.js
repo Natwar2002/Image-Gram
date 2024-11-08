@@ -9,17 +9,17 @@ export const createPostService = async (createPostObject) => {
 }
 
 export async function getAllPostService(offset, limit) {
-    const posts = await findAllPosts(offset, limit);
+    const post = await findAllPosts(offset, limit);
     const totalDocuments = await countAllPost();
 
-    const postsWithTotalComments = posts.map(post => {
+    const posts = post.map(post => {
         const totalComments = countCommentsAndReplies(post.comments);
         return { ...post.toObject(), totalComments };
     });
 
     const totalPages = Math.ceil(totalDocuments/limit);
     return {
-        postsWithTotalComments, totalDocuments, totalPages
+        posts, totalDocuments, totalPages
     }
 }
 
