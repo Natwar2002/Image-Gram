@@ -12,10 +12,26 @@ export async function getAllPostService(offset, limit) {
     const posts = await findAllPosts(offset, limit);
     const totalDocuments = await countAllPost();
 
+    const postsWithTotalComments = posts.map(post => {
+        const totalComments = countCommentsAndReplies(post.comments);
+        return { ...post.toObject(), totalComments };
+    });
+
     const totalPages = Math.ceil(totalDocuments/limit);
     return {
-        posts, totalDocuments, totalPages
+        postsWithTotalComments, totalDocuments, totalPages
     }
+}
+
+const countCommentsAndReplies = (comments) => {
+    let total = comments.length;
+
+    comments.forEach(comment => {
+        if (comment.replies && comment.replies.length > 0) {
+            total += countCommentsAndReplies(comment.replies);
+        }
+    });
+    return total;
 }
 
 export async function deletePostService(id, user) {
