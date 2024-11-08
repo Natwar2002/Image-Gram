@@ -13,6 +13,12 @@ export const createCommentService = async (content, onModel, commentableId, user
         
         const newComment = await createComment(content, onModel, userId, commentableId);
         await addChildCommentToParent(onModel, newComment, parent);
+        if (onModel === "Comment") {
+            const topLevelParent = await findTopLevelParent(commentableId);
+            if (topLevelParent) {
+                await addCommentToTopLevelParent(newComment, topLevelParent);
+            }
+        }
         return newComment;
     } catch (error) {
         console.log(error);
@@ -48,6 +54,14 @@ export const fetchCommentParent = async (onModel, commentableId) => {
     }
 }
 
+export const findTopLevelParent = async (commentableId) => {
+    let currentComment = await findCommentById(commentableId);
+    while (currentComment && currentComment.onModel === "Comment") {
+        currentComment = await findCommentById(currentComment.commentableId);
+    }
+    return currentComment;
+};
+
 export const addChildCommentToParent = async (onModel, newComment, parent) => {
     try {
         if (onModel == "Post") {
@@ -60,6 +74,15 @@ export const addChildCommentToParent = async (onModel, newComment, parent) => {
         console.log(error);
     }
 }
+
+export const addCommentToTopLevelParent = async (newComment, topLevelParent) => {
+    try {
+        topLevelParent.replies.push(newComment._id);
+        await topLevelParent.save();
+    } catch (error) {
+        console.log(error);
+    }
+};
 
 export const deleteCommentService = async (commentId, userId) => {
     try {
