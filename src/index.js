@@ -6,13 +6,12 @@ import swaggerJSDoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
 import { options } from './utils/swaggerOptions.js';
 import cors from 'cors';
-import { FRONTEND_URL } from './config/serverConfig.js';
 
 const PORT = 3000;
 
 const app = express();
 
-app.use(cors({ origin: FRONTEND_URL }));
+app.use(cors({ origin: "https://imagegram-lilac.vercel.app" }));
 app.use(express.json());
 app.use(express.text());
 app.use(express.urlencoded({ extended: true }));
