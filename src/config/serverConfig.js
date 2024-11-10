@@ -7,3 +7,4 @@ export const CLOUD_NAME = process.env.CLOUD_NAME;
 export const API_KEY = process.env.API_KEY;
 export const API_SECRET = process.env.API_SECRET;
 export const JWT_SECRET = process.env.JWT_SECRET;
+export const FRONTEND_URL= process.env.FRONTEND_URL;

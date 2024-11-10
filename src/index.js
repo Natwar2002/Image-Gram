@@ -11,7 +11,7 @@ const PORT = 3000;
 
 const app = express();
 
-app.use(cors());
+app.use(cors({ origin: FRONTEND_URL }));
 app.use(express.json());
 app.use(express.text());
 app.use(express.urlencoded({ extended: true }));
