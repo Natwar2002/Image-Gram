@@ -11,7 +11,7 @@ const PORT = 3000;
 
 const app = express();
 
-app.use(cors({ origin: "https://imagegram-lilac.vercel.app" }));
+app.use(cors());
 app.use(express.json());
 app.use(express.text());
 app.use(express.urlencoded({ extended: true }));
