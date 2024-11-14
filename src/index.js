@@ -11,7 +11,14 @@ const PORT = 3000;
 
 const app = express();
 
-app.use(cors());
+const corsOptions = {
+    origin: '*', // Replace '*' with specific origins, e.g., ['http://localhost:3000', 'https://yourdomain.com']
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'x-access-token'],
+    credentials: true, // Enable if needed (for cookies, authorization headers)
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.text());
 app.use(express.urlencoded({ extended: true }));

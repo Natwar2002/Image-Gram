@@ -34,11 +34,15 @@ const userSchema = new mongoose.Schema({
             },
             message: "Please choose a stronger password"
         }
+    },
+    avatar: {
+        type: String
     }
 }, { timestamps: true });
 
 userSchema.pre('save', function modifyPassword(next) {
     const user =  this;
+    user.avtar = `https://robohash.org/${user.username}`;
     const SALT = bcrypt.genSaltSync(9);
     const hashedPassword = bcrypt.hashSync(user.password, SALT);
     user.password = hashedPassword;
