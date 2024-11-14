@@ -19,7 +19,7 @@ export const findAllPosts = async (offset, limit) => {
             .populate({
                 path: 'comments',
                 populate: [
-                    { path: 'userId', select: 'username' },
+                    { path: 'userId', select: 'username avatar' },
                     {
                         path: 'likes', 
                         populate: {
@@ -30,10 +30,10 @@ export const findAllPosts = async (offset, limit) => {
                     {
                         path: 'replies',
                         populate: [
-                            { path: 'userId', select: 'username' },
+                            { path: 'userId', select: 'username avatar' },
                             {
                                 path: 'likes',
-                                populate: { path: 'user', select: "username" },
+                                populate: { path: 'user', select: "username avatar" },
                             }
                         ]
                     }
@@ -41,7 +41,7 @@ export const findAllPosts = async (offset, limit) => {
             })
             .populate({
                 path: 'likes',
-                populate: { path: 'user', select: 'username' }
+                populate: { path: 'user', select: 'username avatar' }
             });
         return posts;
     } catch (error) {

@@ -37,12 +37,14 @@ const userSchema = new mongoose.Schema({
     },
     avatar: {
         type: String
-    }
+    },
 }, { timestamps: true });
 
 userSchema.pre('save', function modifyPassword(next) {
     const user =  this;
-    user.avtar = `https://robohash.org/${user.username}`;
+    if (!user.avatar) {
+        user.avatar = `https://robohash.org/${user.username}`;
+    }
     const SALT = bcrypt.genSaltSync(9);
     const hashedPassword = bcrypt.hashSync(user.password, SALT);
     user.password = hashedPassword;
