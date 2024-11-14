@@ -1,4 +1,4 @@
-import { createCommentService, deleteCommentService, findCommentByIdService } from '../services/commentService.js';
+import { createCommentService, deleteCommentService, findCommentByIdService, getAllCommentsOnPostService } from '../services/commentService.js';
 
 export async function createComment(req, res) {
     try {
@@ -8,7 +8,7 @@ export async function createComment(req, res) {
         return res.status(201).json({
             success: true,
             messsage: "Comment created successfully",
-            date: response
+            data: response
         });
     } catch (error) {
         if(error.status) {
@@ -52,14 +52,35 @@ export async function deleteComment(req, res) {
         const userId = req.user._id;
         const commentId = req.params.id;
         const response = await deleteCommentService(commentId, userId);
-        console.log(response);
-        
         if(response) {
             return res.status(200).json({
                 success: true,
                 message: "Comment deleted successfully"
             });
         }
+    } catch (error) {
+        if(error.status) {
+            return res.status(error.status).json({
+                success: false,
+                message: error.message,
+            });
+        }
+        return res.status(500).json({
+            success: false,
+            message: "Internal server error",
+        })
+    }
+}
+
+export async function getAllCommentsOnPost(req, res) {
+    try {
+        const commentableId = req.params.id;
+        const response = await getAllCommentsOnPostService(commentableId);
+        return res.status(200).json({
+            success: true,
+            message: "Comments found successfully",
+            data: response,
+        });
     } catch (error) {
         if(error.status) {
             return res.status(error.status).json({

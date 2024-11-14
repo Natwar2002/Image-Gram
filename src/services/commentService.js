@@ -1,4 +1,4 @@
-import { createComment, deleteComment, findCommentById, } from '../repositories/commentRepository.js';
+import { createComment, deleteComment, fetchAllCommentsByCommentableId, findCommentById, } from '../repositories/commentRepository.js';
 import { findPostById } from '../repositories/postRepository.js';
 
 export const createCommentService = async (content, onModel, commentableId, userId) => {
@@ -109,6 +109,15 @@ export const deleteCommentService = async (commentId, userId) => {
 
         await deleteComment(commentId);
         return true;
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export const getAllCommentsOnPostService = async function(commentableId) {
+    try {
+        const comments = fetchAllCommentsByCommentableId(commentableId);
+        return comments;
     } catch (error) {
         console.log(error);
     }

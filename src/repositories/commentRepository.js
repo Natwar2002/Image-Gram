@@ -26,3 +26,21 @@ export async function deleteComment(commentId) {
         console.log(error);   
     }
 }
+
+export async function fetchAllCommentsByCommentableId(commentableId) {
+    const comments = await Comment.find({ commentableId })
+        .populate({
+            path: 'userId',
+            select: 'username avatar' // populate username and avatar of the comment author
+        })
+        .populate({
+            path: 'replies',
+            populate: {
+                path: 'userId',
+                select: 'username avatar' // populate username and avatar of the reply author
+            }
+        })
+        .exec();
+
+    return comments;
+}
