@@ -15,7 +15,7 @@ export const findAllPosts = async (offset, limit) => {
             .sort({ createdAt: -1 })
             .skip(offset)
             .limit(limit)
-            .populate('user', 'username email')
+            .populate('user', 'username email avatar')
             .populate({
                 path: 'comments',
                 populate: [
