@@ -1,3 +1,5 @@
+import { countComments } from "../repositories/commentRepository.js";
+import { countLikes } from "../repositories/likeRepository.js";
 import { countAllPost, createPost, deletePostById, findAllPosts, findPostById, updatePostById } from "../repositories/postRepository.js";
 
 export const createPostService = async (createPostObject) => {
@@ -12,26 +14,18 @@ export async function getAllPostService(offset, limit) {
     const post = await findAllPosts(offset, limit);
     const totalDocuments = await countAllPost();
 
-    const posts = post.map(post => {
-        const totalComments = countCommentsAndReplies(post.comments);
-        return { ...post.toObject(), totalComments };
-    });
+    const posts = await Promise.all(
+        post.map(async (post) => {
+            const totalComments = await countComments(post._id);
+            const totalLikes = await  countLikes(post._id);
+            return { ...post.toObject(), totalComments, totalLikes };
+        })
+    );
 
     const totalPages = Math.ceil(totalDocuments/limit);
     return {
         posts, totalDocuments, totalPages
     }
-}
-
-const countCommentsAndReplies = (comments) => {
-    let total = comments.length;
-
-    comments.forEach(comment => {
-        if (comment.replies && comment.replies.length > 0) {
-            total += countCommentsAndReplies(comment.replies);
-        }
-    });
-    return total;
 }
 
 export async function deletePostService(id, user) {

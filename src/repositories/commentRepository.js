@@ -44,3 +44,8 @@ export async function fetchAllCommentsByCommentableId(commentableId) {
 
     return comments;
 }
+
+export const countComments = async function (commentableId) {
+    const totalComments = await Comment.findOne({ commentableId }).countDocuments();
+    return totalComments;
+}

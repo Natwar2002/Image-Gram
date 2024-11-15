@@ -19,7 +19,7 @@ export async function createLike(req, res) {
 
 export async function removeLike(req, res) {
     try {
-        const { likeableId, onModel } = req.body
+        const { likeableId, onModel } = req.body;
         const response = await removeLikeService(likeableId, onModel, req.user._id);
         return res.status(200).json({
             success: true,

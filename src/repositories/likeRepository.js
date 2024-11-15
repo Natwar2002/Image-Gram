@@ -36,3 +36,8 @@ export const removeLike = async function (likeableId, user) {
         console.log(error);
     }
 }
+
+export const countLikes = async function (likeableId) {
+    const totalLikes = await Like.findOne({ likeableId }).countDocuments();
+    return totalLikes;
+}
